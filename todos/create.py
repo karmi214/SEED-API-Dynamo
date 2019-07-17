@@ -1,7 +1,6 @@
 import json
 import logging
 import os
-import time
 import uuid
 from datetime import datetime
 
@@ -11,21 +10,16 @@ table = dynamodb.Table(os.environ['DYNAMODB_TABLE'])
 
 def create(event, context):
     data = json.loads(event['body'])
-    if 'text' not in data:
+    if 'id' not in data:
         logging.error("Validation Failed")
         raise Exception("Couldn't create the todo item.")
-    
-    timestamp = str(datetime.utcnow().timestamp())
-
 
 
     item = {
         #'id': str(uuid.uuid1()),
         'id': data['id'],
         'name': data['name'],
-        'email': data['email'],
-        'createdAt': timestamp,
-        'updatedAt': timestamp,
+        'email': data['email']
     }
 
     # write the todo to the database
